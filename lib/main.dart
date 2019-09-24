@@ -29,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final _controller = TextEditingController();
 
   void initState() {
-    _controller.text = "我喜欢吃 🍏🍉🥦！";
+    _controller.text = "Ǻ Ɐỉ ḷĺ ƕⱶ ";
     super.initState();
   }
 
