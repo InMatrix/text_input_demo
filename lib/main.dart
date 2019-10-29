@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:characters/characters.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,9 +28,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _controller = TextEditingController();
+  var _useCharactersAPI = true;
 
   void initState() {
-    _controller.text = "Ǻ Ɐỉ ḷĺ ƕⱶ 👍 😀 🇩🇰 한";
+    _controller.text = "👍😀🇩🇰한好🛴⚽️";
     super.initState();
   }
 
@@ -45,50 +46,103 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  int _countCharacters(String input, bool useCharactersAPI) {
+    if (useCharactersAPI) {
+      return Characters(input).length;
+    } else {
+      return input.length;
+    }
+  }
+
+  String _skipLastCharacter(String input, bool useCharactersAPI) {
+    if (useCharactersAPI) {
+      return Characters(input).skipLast(1).toString();
+    } else {
+      return input.substring(0, input.length - 1);
+    }
+  }
+
+  String _replaceCharacters(String input, bool useCharactersAPI) {
+    if (useCharactersAPI) {
+      return Characters(_controller.text)
+          .replaceAll(Characters('🇩🇰'), Characters('🇺🇸'))
+          .toString();
+    } else {
+      return input.replaceAll(new RegExp(r'🇩🇰'), '🇺🇸');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              initState();
+            },
+          )
+        ],
       ),
-      body: Center(
-        child: ListView(
-          children: <Widget>[
-            Text("Text Input", style: Theme.of(context).textTheme.display1),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
-                controller: _controller,
-                onChanged: _onTextChange,
+      body: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text("Use the Characters API"),
+              Switch(
+                value: _useCharactersAPI,
+                onChanged: (isSwitchOn) {
+                  if (isSwitchOn) {
+                    setState(() {
+                      _useCharactersAPI = true;
+                    });
+                  } else {
+                    setState(() {
+                      _useCharactersAPI = false;
+                    });
+                  }
+                },
               ),
-            ),
-            Divider(),
-            Row(
+            ],
+          ),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.all(20),
               children: <Widget>[
-                Text("Length:"),
-                Text("${Characters(_controller.text).length}"),
+                Text("Text Input", style: Theme.of(context).textTheme.display1),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: _controller,
+                    onChanged: _onTextChange,
+                  ),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text("Length:"),
+                  subtitle: Text(
+                      "${_countCharacters(_controller.text, _useCharactersAPI)}"),
+                ),
+                ListTile(
+                  title: Text("Skip last character:"),
+                  subtitle: Text(
+                      "${_skipLastCharacter(_controller.text, _useCharactersAPI)}"),
+                ),
+                ListTile(
+                  title: Text("Replace characters"),
+                  subtitle: Text(
+                      "${_replaceCharacters(_controller.text, _useCharactersAPI)}"),
+                )
               ],
             ),
-            Row(
-              children: <Widget>[
-                Text("Skip last character:"),
-                Text("${Characters(_controller.text).skipLast(1)}"),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Text("Replace characters"),
-                Text("${Characters(_controller.text).replaceAll(
-                  Characters('🇩🇰'),
-                  Characters('🇺🇸'),
-                )}"),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
