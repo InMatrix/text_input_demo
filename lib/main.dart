@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:characters/characters.dart';
 
 void main() => runApp(MyApp());
 
@@ -38,6 +39,11 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+  void _onTextChange(String text) {
+    setState(() {
+      // update all the text manipulation results
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +52,9 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: <Widget>[
-            Text("Stock TextField Widget", style: Theme.of(context).textTheme.display1),
+            Text("Text Input", style: Theme.of(context).textTheme.display1),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -59,8 +62,31 @@ class _MyHomePageState extends State<MyHomePage> {
                   border: OutlineInputBorder(),
                 ),
                 controller: _controller,
+                onChanged: _onTextChange,
               ),
-            )
+            ),
+            Divider(),
+            Row(
+              children: <Widget>[
+                Text("Length:"),
+                Text("${Characters(_controller.text).length}"),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Text("Skip last character:"),
+                Text("${Characters(_controller.text).skipLast(1)}"),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Text("Replace characters"),
+                Text("${Characters(_controller.text).replaceAll(
+                  Characters('🇩🇰'),
+                  Characters('🇺🇸'),
+                )}"),
+              ],
+            ),
           ],
         ),
       ),
