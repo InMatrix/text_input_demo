@@ -29,9 +29,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _controller = TextEditingController();
   var _useCharactersAPI = true;
+  static const _defaultText = "👍😀🇩🇰한好🛴⚽️🍕";
 
   void initState() {
-    _controller.text = "👍😀🇩🇰한好🛴⚽️";
+    _controller.text = _defaultText;
     super.initState();
   }
 
@@ -81,7 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              initState();
+              setState(() {
+                _controller.text = _defaultText;
+              });
             },
           )
         ],
