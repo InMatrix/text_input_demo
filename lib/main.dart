@@ -29,7 +29,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _controller = TextEditingController();
   var _useCharactersAPI = true;
-  static const _defaultText = "👍😀🇩🇰한好🛴⚽️🍕";
+  static const _defaultText = "👍😀🇩🇰한好🛴⚽️🍕👧🏽";
 
   void initState() {
     _controller.text = _defaultText;
@@ -65,12 +65,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String _replaceCharacters(String input, bool useCharactersAPI) {
     if (useCharactersAPI) {
-      return Characters(_controller.text)
+      return Characters(input)
           .replaceAll(Characters('🇩🇰'), Characters('🇺🇸'))
           .toString();
     } else {
       return input.replaceAll(new RegExp(r'🇩🇰'), '🇺🇸');
     }
+  }
+
+  String _addWhitespaces(String input, bool useCharactersAPI) {
+    var myString = '';
+    if (useCharactersAPI) {
+      Characters(input).forEach((char) {
+        myString = myString + char + ' ';
+      });
+    } else {
+      for (int i = 0; i < input.length; i++) {
+        myString = myString + input[i] + ' ';
+      }
+    }
+
+    return myString;
   }
 
   @override
@@ -141,6 +156,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: Text("Replace characters"),
                   subtitle: Text(
                       "${_replaceCharacters(_controller.text, _useCharactersAPI)}"),
+                ),
+                ListTile(
+                  title: Text("Add whitespaces"),
+                  subtitle: Text(
+                      "${_addWhitespaces(_controller.text, _useCharactersAPI)}"),
                 )
               ],
             ),
