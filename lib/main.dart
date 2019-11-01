@@ -63,6 +63,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  bool _characterExist(String input, String character, bool useCharactersAPI) {
+    if (useCharactersAPI) {
+      return Characters(input).contains(character);
+    } else {
+      return input.contains(character);
+    }
+  }
+
   String _replaceCharacters(String input, bool useCharactersAPI) {
     if (useCharactersAPI) {
       return Characters(input)
@@ -84,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
         myString = myString + input[i] + ' ';
       }
     }
-
     return myString;
   }
 
@@ -153,7 +160,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       "${_skipLastCharacter(_controller.text, _useCharactersAPI)}"),
                 ),
                 ListTile(
-                  title: Text("Replace characters"),
+                  title: Text("Determine exisitence of character 🇩🇰"),
+                  subtitle: Text(
+                      "${_characterExist(_controller.text, '🇩🇰', _useCharactersAPI)}"),
+                ),
+                ListTile(
+                  title: Text("Replace 🇩🇰 with 🇺🇸"),
                   subtitle: Text(
                       "${_replaceCharacters(_controller.text, _useCharactersAPI)}"),
                 ),
