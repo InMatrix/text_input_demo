@@ -150,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Divider(),
                 ListTile(
-                  title: Text("Length:"),
+                  title: Text("Character count:"),
                   subtitle: Text(
                       "${_countCharacters(_controller.text, _useCharactersAPI)}"),
                 ),
